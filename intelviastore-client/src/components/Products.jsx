@@ -90,12 +90,12 @@ export default function Products (props) {
                             onChange={showPreview} id="image-uploader" />
                     </div>
                     <div className="form-group">
-                        <input className={"form-control" + applyErrorClass('Name')} placeholder="Product Name" name="productname" 
+                        <input className={"form-control" + applyErrorClass('Name')} placeholder="Product Name" name="Name" 
                             value={values.Name}
                             onChange={handleInputChange} />
                     </div>
                     <div className="form-group">
-                        <input className={"form-control" + applyErrorClass('Description')} placeholder="Product Description" name="productdecriptions" 
+                        <input className={"form-control" + applyErrorClass('Description')} placeholder="Product Description" name="Description" 
                             value={values.Description}
                             onChange={handleInputChange} />
                     </div>
