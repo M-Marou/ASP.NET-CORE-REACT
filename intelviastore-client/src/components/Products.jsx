@@ -6,12 +6,17 @@ const initialFieldValues = {
     Name : '',
     Description : '',
     ImageSrc: defaultImageSrc,
+    ImageName: '',
     ImageFile: null
 }
 
-export default function Products () {
+export default function Products (props) {
+
+    const {addOrEdit} = props
+
     const [values, setValues] = useState(initialFieldValues)
     const [errors, setErrors] = useState({})
+    
     const handleInputChange = e => {
         const { name, value } = e.target;
         setValues({
@@ -49,10 +54,23 @@ export default function Products () {
         setErrors(temp)
         return Object.values(temp).every(x => x==true)
     } 
+
+    const resetForm = () => {
+        setValues(initialFieldValues)
+        document.getElementById('image-uploader').value = null;
+        setErrors({})
+    }
+
     const handleFormSubmit = e => {
         e.preventDefault()
         if(validate()){
-
+            const formData = new FormData()
+            formData.append('Id', values.Id)
+            formData.append('Name', values.Name)
+            formData.append('Description', values.Description)
+            formData.append('ImageFile', values.ImageFile)
+            formData.append('ImageName', values.ImageName)
+            addOrEdit(formData.resetForm)
         }
     }
 
@@ -65,25 +83,26 @@ export default function Products () {
         </div>
         <form autoComplete="off" noValidate onSubmit={handleFormSubmit}>
             <div className="card">
-                <img src={values.ImageSrc} className="card-img-top"/>
+                <img src={values.ImageSrc} className="card-img-top" />
                 <div className="card-body">
                     <div className="form-group">
                         <input type="file" accept="image/*" className={"form-control-file" + applyErrorClass('ImageSrc')}
-                            onChange={showPreview}/>
+                            onChange={showPreview} id="image-uploader" />
                     </div>
                     <div className="form-group">
                         <input className={"form-control" + applyErrorClass('Name')} placeholder="Product Name" name="productname" 
                             value={values.Name}
-                            onChange={handleInputChange}/>
+                            onChange={handleInputChange} />
                     </div>
                     <div className="form-group">
                         <input className={"form-control" + applyErrorClass('Description')} placeholder="Product Description" name="productdecriptions" 
                             value={values.Description}
-                            onChange={handleInputChange}/>
+                            onChange={handleInputChange} />
                     </div>
                     <div className="form-group text-center">
                         <button type="submit" className="btn btn-outline-primary">Add Product</button>
                     </div>
+
                 </div>
             </div>
         </form>

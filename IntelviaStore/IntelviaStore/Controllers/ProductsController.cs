@@ -2,151 +2,127 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IntelviaStore.Models;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace IntelviaStore.Controllers
 {
-    public class ProductsController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ProductsController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProductsController(AppDbContext context)
+        public ProductsController(AppDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            this._webHostEnvironment = webHostEnvironment;
         }
 
-        // GET: Products
-        public async Task<IActionResult> Index()
+        // GET: api/Products
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ProductModel>>> GetProducts()
         {
-            return View(await _context.Products.ToListAsync());
+            return await _context.Products.ToListAsync();
         }
 
-        // GET: Products/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: api/Products/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ProductModel>> GetProductModel(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var productModel = await _context.Products
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (productModel == null)
-            {
-                return NotFound();
-            }
-
-            return View(productModel);
-        }
-
-        // GET: Products/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,ImageUrl")] ProductModel productModel)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(productModel);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(productModel);
-        }
-
-        // GET: Products/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var productModel = await _context.Products.FindAsync(id);
+
             if (productModel == null)
             {
                 return NotFound();
             }
-            return View(productModel);
+
+            return productModel;
         }
 
-        // POST: Products/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,ImageUrl")] ProductModel productModel)
+        // PUT: api/Products/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutProductModel(int id, ProductModel productModel)
         {
             if (id != productModel.Id)
             {
-                return NotFound();
+                return BadRequest();
             }
 
-            if (ModelState.IsValid)
+            _context.Entry(productModel).State = EntityState.Modified;
+
+            try
             {
-                try
-                {
-                    _context.Update(productModel);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductModelExists(productModel.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                await _context.SaveChangesAsync();
             }
-            return View(productModel);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProductModelExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
-        // GET: Products/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // POST: api/Products
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<ProductModel>> PostProductModel([FromForm]ProductModel productModel)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            productModel.ImageName = await SaveImage(productModel.ImageFile);
+            _context.Products.Add(productModel);
+            await _context.SaveChangesAsync();
 
-            var productModel = await _context.Products
-                .FirstOrDefaultAsync(m => m.Id == id);
+            //return CreatedAtAction("GetProductModel", new { id = productModel.Id }, productModel);
+            return StatusCode(201);
+        }
+
+        // DELETE: api/Products/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProductModel(int id)
+        {
+            var productModel = await _context.Products.FindAsync(id);
             if (productModel == null)
             {
                 return NotFound();
             }
 
-            return View(productModel);
-        }
-
-        // POST: Products/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var productModel = await _context.Products.FindAsync(id);
             _context.Products.Remove(productModel);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            return NoContent();
         }
 
         private bool ProductModelExists(int id)
         {
             return _context.Products.Any(e => e.Id == id);
+        }
+
+        [NonAction]
+        public async Task<string> SaveImage(IFormFile imageFile)
+        {
+            string imageName = new String(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(' ', '-');
+            imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(imageFile.FileName);
+            var imagePath = Path.Combine(_webHostEnvironment.ContentRootPath, "Images", imageName);
+
+            using (var fileStream = new FileStream(imagePath, FileMode.Create))
+            {
+                await imageFile.CopyToAsync(fileStream);
+            }
+
+            return imageName;
         }
     }
 }
