@@ -16,6 +16,6 @@ namespace IntelviaStore.Models
         public string Name { get; set; }
 
         [NotMapped]
-        public IFormFile ImageUrl { get; set; }
+        public IFormFile ImageFile { get; set; }
     }
 }
