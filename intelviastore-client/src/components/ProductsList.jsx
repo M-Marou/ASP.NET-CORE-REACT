@@ -6,9 +6,9 @@ const ProductsList = () => {
     return (
         <div className="row">
             <div className="col-md-12">
-                <div class="jumbotron jumbotron-fluid py-4">
-                    <div class="container text-center">
-                        <h1 class="display-4">Products register</h1>
+                <div className="jumbotron jumbotron-fluid py-4">
+                    <div className="container text-center">
+                        <h1 className="display-4">Products register</h1>
                     </div>
                 </div>
             </div>
