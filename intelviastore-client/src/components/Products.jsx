@@ -2,12 +2,12 @@ import React, {useState, useEffect} from 'react';
 
 const defaultImageSrc = '/img/product.jpg'
 const initialFieldValues = {
-    Id : 0,
-    Name : '',
-    Description : '',
-    ImageSrc: defaultImageSrc,
-    ImageName: '',
-    ImageFile: null
+    id : 0,
+    productName : '',
+    description : '',
+    imageSrc: defaultImageSrc,
+    imageName: '',
+    imageFile: null
 }
 
 export default function Products (props) {
@@ -33,7 +33,7 @@ export default function Products (props) {
                 setValues({
                     ...values,
                     imageFile,
-                    ImageSrc: x.target.result
+                    imageSrc: x.target.result
                 })
             }
             reader.readAsDataURL(imageFile)
@@ -49,8 +49,9 @@ export default function Products (props) {
 
     const validate = () => {
         let temp = {}
-        temp.Name = values.Name==""?false:true;
-        temp.ImageSrc = values.ImageSrc==defaultImageSrc?false:true;
+        temp.productName = values.productName==""?false:true;
+        temp.description = values.description==""?false:true;
+        temp.imageSrc = values.imageSrc==defaultImageSrc?false:true;
         setErrors(temp)
         return Object.values(temp).every(x => x==true)
     } 
@@ -65,12 +66,12 @@ export default function Products (props) {
         e.preventDefault()
         if(validate()){
             const formData = new FormData()
-            formData.append('Id', values.Id)
-            formData.append('Name', values.Name)
-            formData.append('Description', values.Description)
-            formData.append('ImageFile', values.ImageFile)
-            formData.append('ImageName', values.ImageName)
-            addOrEdit(formData.resetForm)
+            formData.append('id', values.id)
+            formData.append('productName', values.productName)
+            formData.append('description', values.description)
+            formData.append('imageFile', values.imageFile)
+            formData.append('imageName', values.imageName)
+            addOrEdit(formData, resetForm)
         }
     }
 
@@ -83,20 +84,20 @@ export default function Products (props) {
         </div>
         <form autoComplete="off" noValidate onSubmit={handleFormSubmit}>
             <div className="card">
-                <img src={values.ImageSrc} className="card-img-top" />
+                <img src={values.imageSrc} className="card-img-top" />
                 <div className="card-body">
                     <div className="form-group">
-                        <input type="file" accept="image/*" className={"form-control-file" + applyErrorClass('ImageSrc')}
+                        <input type="file" accept="image/*" className={"form-control-file" + applyErrorClass('imageSrc')}
                             onChange={showPreview} id="image-uploader" />
                     </div>
                     <div className="form-group">
-                        <input className={"form-control" + applyErrorClass('Name')} placeholder="Product Name" name="Name" 
-                            value={values.Name}
+                        <input className={"form-control" + applyErrorClass('productName')} placeholder="Product Name" name="productName" 
+                            value={values.productName}
                             onChange={handleInputChange} />
                     </div>
                     <div className="form-group">
-                        <input className={"form-control" + applyErrorClass('Description')} placeholder="Product Description" name="Description" 
-                            value={values.Description}
+                        <input className={"form-control" + applyErrorClass('description')} placeholder="Product Description" name="description" 
+                            value={values.description}
                             onChange={handleInputChange} />
                     </div>
                     <div className="form-group text-center">

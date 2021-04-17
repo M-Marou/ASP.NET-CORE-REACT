@@ -12,7 +12,7 @@ namespace IntelviaStore.Models
         [key]
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        public string ProductName { get; set; }
 
         public string Description { get; set; }
 
@@ -21,6 +21,6 @@ namespace IntelviaStore.Models
 
         public string ImageName { get; set; }
 
-        public CategoriesModel Categories { get; set; }
+        //public CategoriesModel Categories { get; set; }
     }
 }

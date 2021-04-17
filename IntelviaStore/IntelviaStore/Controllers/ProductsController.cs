@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IntelviaStore.Models;
-using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace IntelviaStore.Controllers
 {
