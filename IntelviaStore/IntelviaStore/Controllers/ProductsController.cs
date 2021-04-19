@@ -115,6 +115,7 @@ namespace IntelviaStore.Controllers
                 return NotFound();
             }
 
+            DeleteImage(productsModel.ImageName);
             _context.Products.Remove(productsModel);
             await _context.SaveChangesAsync();
 

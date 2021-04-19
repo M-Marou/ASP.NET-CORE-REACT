@@ -12,7 +12,7 @@ import axios from 'axios'
             refteshProductsList();
         }, [])
         
-        const ProductsAPI = (url = 'https://localhost:44378/api/Products') => {
+        const ProductsAPI = (url = 'https://localhost:44378/api/Products/') => {
                 return{
                     fetchall: () => axios.get(url),
                     create: newRecord => axios.post(url, newRecord),
@@ -48,12 +48,23 @@ import axios from 'axios'
             setrecordForEdit(data)
         }
 
+        const onDelete = (e,id)=>{
+            e.stopPropagation();
+            if(window.confirm('Are you sure, you would like to delete this product?'))
+            ProductsAPI().delete(id)
+            .then(res => refteshProductsList())
+            .catch(err => console.log(err))
+        }
+
         const imageCard = data => (
             <div className="card" onClick={()=> {showRecordDetails(data)}}>
                 <img src={data.imageSrc} className="card-img-top" />
                 <div className="card-body">
                     <h5>{data.productName}</h5>
-                    <span>{data.description}</span>
+                    <span>{data.description}</span> <br/>
+                    <button className="btn btn-light delete-button" onClick={e => onDelete(e,parseInt(data.productID))}>
+                        <i className="far fa-trash-alt"></i>
+                    </button>
                 </div>
             </div>
         )
