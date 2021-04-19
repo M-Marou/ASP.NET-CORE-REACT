@@ -89,15 +89,18 @@ namespace IntelviaStore.Migrations
 
             modelBuilder.Entity("IntelviaStore.Models.CategoriesModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("CategoryID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name")
+                    b.Property<string>("CategoryName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("ImageName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CategoryID");
 
                     b.ToTable("Categories");
                 });
@@ -109,7 +112,7 @@ namespace IntelviaStore.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CategoriesId")
+                    b.Property<int?>("CategoriesCategoryID")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -120,7 +123,7 @@ namespace IntelviaStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoriesId");
+                    b.HasIndex("CategoriesCategoryID");
 
                     b.ToTable("Products");
                 });
@@ -260,7 +263,7 @@ namespace IntelviaStore.Migrations
                 {
                     b.HasOne("IntelviaStore.Models.CategoriesModel", "Categories")
                         .WithMany()
-                        .HasForeignKey("CategoriesId");
+                        .HasForeignKey("CategoriesCategoryID");
 
                     b.Navigation("Categories");
                 });
