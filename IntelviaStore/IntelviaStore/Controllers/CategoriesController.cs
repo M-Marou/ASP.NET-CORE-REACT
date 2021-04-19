@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IntelviaStore.Models;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace IntelviaStore.Controllers
 {
@@ -14,10 +16,12 @@ namespace IntelviaStore.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public CategoriesController(AppDbContext context)
+        public CategoriesController(AppDbContext context,IWebHostEnvironment hostEnvironment)
         {
             _context = context;
+            this._hostEnvironment = hostEnvironment;
         }
 
         // GET: api/Categories
@@ -46,7 +50,7 @@ namespace IntelviaStore.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCategoriesModel(int id, CategoriesModel categoriesModel)
         {
-            if (id != categoriesModel.Id)
+            if (id != categoriesModel.CategoryID)
             {
                 return BadRequest();
             }
@@ -77,6 +81,7 @@ namespace IntelviaStore.Controllers
         [HttpPost]
         public async Task<ActionResult<CategoriesModel>> PostCategoriesModel([FromForm]CategoriesModel categoriesModel)
         {
+            categoriesModel.ImageName = await SaveImage(categoriesModel.ImageFile);
             _context.Categories.Add(categoriesModel);
             await _context.SaveChangesAsync();
 
@@ -101,7 +106,20 @@ namespace IntelviaStore.Controllers
 
         private bool CategoriesModelExists(int id)
         {
-            return _context.Categories.Any(e => e.Id == id);
+            return _context.Categories.Any(e => e.CategoryID == id);
+        }
+
+        [NonAction]
+        public async Task<string> SaveImage(IFormFile imageFile)
+        {
+            string imageName = new string(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(' ', '-');
+            imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(imageFile.FileName);
+            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Images", imageName);
+            using (var fileStream = new FileStream(imagePath, FileMode.Create))
+            {
+                await imageFile.CopyToAsync(fileStream);
+            }
+            return imageName;
         }
     }
 }
