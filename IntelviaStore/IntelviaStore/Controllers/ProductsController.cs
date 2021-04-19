@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IntelviaStore.Models;
-using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace IntelviaStore.Controllers
 {
@@ -16,6 +16,7 @@ namespace IntelviaStore.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly AppDbContext _context;
+
         private readonly IWebHostEnvironment _webHostEnvironment;
 
         public ProductsController(AppDbContext context, IWebHostEnvironment webHostEnvironment)
@@ -26,36 +27,51 @@ namespace IntelviaStore.Controllers
 
         // GET: api/Products
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductModel>>> GetProducts()
+        public async Task<ActionResult<IEnumerable<ProductsModel>>> GetProducts()
         {
-            return await _context.Products.ToListAsync();
+            return await _context.Products
+                .Select(x => new ProductsModel()
+                {
+                    ProductID = x.ProductID,
+                    ProductName = x.ProductName,
+                    Description = x.Description,
+                    ImageName = x.ImageName,
+                    ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, x.ImageName)
+                })
+                .ToListAsync();
         }
 
         // GET: api/Products/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductModel>> GetProductModel(int id)
+        public async Task<ActionResult<ProductsModel>> GetProductsModel(int id)
         {
-            var productModel = await _context.Products.FindAsync(id);
+            var productsModel = await _context.Products.FindAsync(id);
 
-            if (productModel == null)
+            if (productsModel == null)
             {
                 return NotFound();
             }
 
-            return productModel;
+            return productsModel;
         }
 
         // PUT: api/Products/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProductModel(int id, ProductModel productModel)
+        public async Task<IActionResult> PutProductsModel(int id, [FromForm]ProductsModel productsModel)
         {
-            if (id != productModel.Id)
+            if (id != productsModel.ProductID)
             {
                 return BadRequest();
             }
 
-            _context.Entry(productModel).State = EntityState.Modified;
+            if (productsModel.ImageFile != null)
+            {
+                DeleteImage(productsModel.ImageName);
+                productsModel.ImageName = await SaveImage(productsModel.ImageFile);
+            }
+
+            _context.Entry(productsModel).State = EntityState.Modified;
 
             try
             {
@@ -63,7 +79,7 @@ namespace IntelviaStore.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProductModelExists(id))
+                if (!ProductsModelExists(id))
                 {
                     return NotFound();
                 }
@@ -79,35 +95,35 @@ namespace IntelviaStore.Controllers
         // POST: api/Products
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ProductModel>> PostProductModel([FromForm]ProductModel productModel)
+        public async Task<ActionResult<ProductsModel>> PostProductsModel([FromForm]ProductsModel productsModel)
         {
-            productModel.ImageName = await SaveImage(productModel.ImageFile);
-            _context.Products.Add(productModel);
+            productsModel.ImageName = await SaveImage(productsModel.ImageFile);
+            _context.Products.Add(productsModel);
             await _context.SaveChangesAsync();
 
-            //return CreatedAtAction("GetProductModel", new { id = productModel.Id }, productModel);
+            //return CreatedAtAction("GetProductsModel", new { id = productsModel.ProductID }, productsModel);
             return StatusCode(201);
         }
 
         // DELETE: api/Products/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProductModel(int id)
+        public async Task<IActionResult> DeleteProductsModel(int id)
         {
-            var productModel = await _context.Products.FindAsync(id);
-            if (productModel == null)
+            var productsModel = await _context.Products.FindAsync(id);
+            if (productsModel == null)
             {
                 return NotFound();
             }
 
-            _context.Products.Remove(productModel);
+            _context.Products.Remove(productsModel);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool ProductModelExists(int id)
+        private bool ProductsModelExists(int id)
         {
-            return _context.Products.Any(e => e.Id == id);
+            return _context.Products.Any(e => e.ProductID == id);
         }
 
         [NonAction]
@@ -123,6 +139,13 @@ namespace IntelviaStore.Controllers
             }
 
             return imageName;
+        }
+        [NonAction]
+        public void DeleteImage(string imageName)
+        {
+            var imagePath = Path.Combine(_webHostEnvironment.ContentRootPath, "Images", imageName);
+            if (System.IO.File.Exists(imagePath))
+                System.IO.File.Delete(imagePath);
         }
     }
 }

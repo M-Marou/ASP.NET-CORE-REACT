@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 
 const defaultImageSrc = '/img/product.jpg'
 const initialFieldValues = {
-    id : 0,
+    productID : 0,
     productName : '',
     description : '',
     imageSrc: defaultImageSrc,
@@ -12,10 +12,15 @@ const initialFieldValues = {
 
 export default function Products (props) {
 
-    const {addOrEdit} = props
+    const {addOrEdit, recordForEdit} = props
 
     const [values, setValues] = useState(initialFieldValues)
     const [errors, setErrors] = useState({})
+
+    useEffect(()=>{
+        if(recordForEdit != null)
+        setValues(recordForEdit);
+    },[recordForEdit])
     
     const handleInputChange = e => {
         const { name, value } = e.target;
@@ -66,7 +71,7 @@ export default function Products (props) {
         e.preventDefault()
         if(validate()){
             const formData = new FormData()
-            formData.append('id', values.id)
+            formData.append('productID', values.productID)
             formData.append('productName', values.productName)
             formData.append('description', values.description)
             formData.append('imageFile', values.imageFile)

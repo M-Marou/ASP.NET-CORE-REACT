@@ -102,9 +102,9 @@ namespace IntelviaStore.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("IntelviaStore.Models.ProductModel", b =>
+            modelBuilder.Entity("IntelviaStore.Models.ProductsModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ProductID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -118,7 +118,7 @@ namespace IntelviaStore.Migrations
                     b.Property<string>("ProductName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ProductID");
 
                     b.ToTable("Products");
                 });
