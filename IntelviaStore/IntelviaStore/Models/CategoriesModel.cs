@@ -11,9 +11,11 @@ namespace IntelviaStore.Models
     public class CategoriesModel
     {
         [Key]
-        public int Id { get; set; }
+        public int CategoryID { get; set; }
 
-        public string Name { get; set; }
+        public string CategoryName { get; set; }
+
+        public string ImageName { get; set; }
 
         [NotMapped]
         public IFormFile ImageFile { get; set; }
