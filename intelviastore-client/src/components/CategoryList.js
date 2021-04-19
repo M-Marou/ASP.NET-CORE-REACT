@@ -4,7 +4,7 @@ import axios from "axios";
 
 export default function CategoryList(){
 
-    const CategoryAPI = (URL = '') => {
+    const CategoryAPI = (URL = 'https://localhost:44378/api/Categories') => {
         return{
             fetchAll: () => axios.get(URL),
             create: newRecord => axios.post(URL, newRecord),
