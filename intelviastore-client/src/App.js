@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import CategoryList from './components/CategoryList';
 import ProductLists from './components/ProductsList';
 
 
@@ -8,6 +9,8 @@ function App() {
   return (
     <div className="container">
         {/* <ProductLists /> */}
+        {/* <CategoryList/> */}
+        
     </div>
   );
 }
