@@ -102,25 +102,23 @@ namespace IntelviaStore.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("IntelviaStore.Models.ProductModel", b =>
+            modelBuilder.Entity("IntelviaStore.Models.ProductsModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ProductID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CategoriesId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("ImageName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("ProductName")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("CategoriesId");
+                    b.HasKey("ProductID");
 
                     b.ToTable("Products");
                 });
@@ -254,15 +252,6 @@ namespace IntelviaStore.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("IntelviaStore.Models.ProductModel", b =>
-                {
-                    b.HasOne("IntelviaStore.Models.CategoriesModel", "Categories")
-                        .WithMany()
-                        .HasForeignKey("CategoriesId");
-
-                    b.Navigation("Categories");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
