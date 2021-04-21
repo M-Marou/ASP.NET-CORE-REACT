@@ -16,6 +16,5 @@ namespace IntelviaStore.Models
 
         public DbSet<AppUser> appUsers { get; set; }
         public DbSet<CategoriesModel> Categories { get; set; }
-        public DbSet<ProductModel> Products { get; set; }
     }
 }

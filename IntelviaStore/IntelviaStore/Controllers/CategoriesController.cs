@@ -28,7 +28,15 @@ namespace IntelviaStore.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CategoriesModel>>> GetCategories()
         {
-            return await _context.Categories.ToListAsync();
+            return await _context.Categories
+                .Select(x => new CategoriesModel()
+                {
+                    CategoryID = x.CategoryID,
+                    CategoryName = x.CategoryName,
+                    ImageName = x.ImageName,
+                    ImageSrc = String.Format("{0}://{1}{2}/Images/{3}",Request.Scheme,Request.Host,Request.PathBase,x.ImageName)
+                })
+                .ToListAsync();
         }
 
         // GET: api/Categories/5
@@ -48,11 +56,17 @@ namespace IntelviaStore.Controllers
         // PUT: api/Categories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategoriesModel(int id, CategoriesModel categoriesModel)
+        public async Task<IActionResult> PutCategoriesModel(int id, [FromForm]CategoriesModel categoriesModel)
         {
             if (id != categoriesModel.CategoryID)
             {
                 return BadRequest();
+            }
+
+            if(categoriesModel.ImageFile != null)
+            {
+                DeleteImage(categoriesModel.ImageName);
+                categoriesModel.ImageName = await SaveImage(categoriesModel.ImageFile);
             }
 
             _context.Entry(categoriesModel).State = EntityState.Modified;
@@ -97,7 +111,7 @@ namespace IntelviaStore.Controllers
             {
                 return NotFound();
             }
-
+            DeleteImage(categoriesModel.ImageName);
             _context.Categories.Remove(categoriesModel);
             await _context.SaveChangesAsync();
 
@@ -112,7 +126,7 @@ namespace IntelviaStore.Controllers
         [NonAction]
         public async Task<string> SaveImage(IFormFile imageFile)
         {
-            string imageName = new string(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(' ', '-');
+            string imageName = new String(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(' ', '-');
             imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(imageFile.FileName);
             var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Images", imageName);
             using (var fileStream = new FileStream(imagePath, FileMode.Create))
@@ -120,6 +134,14 @@ namespace IntelviaStore.Controllers
                 await imageFile.CopyToAsync(fileStream);
             }
             return imageName;
+        }
+
+        [NonAction]
+        public void DeleteImage(string imageName)
+        {
+            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Images", imageName);
+            if (System.IO.File.Exists(imagePath))
+                System.IO.File.Delete(imagePath);
         }
     }
 }

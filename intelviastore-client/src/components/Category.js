@@ -12,10 +12,17 @@ const initialFieldValues = {
 
 export default function Category(props){
 
-    const {addOrEdit} = props
+    const { addOrEdit, recordForEdit } = props
 
 const [values, setValues] = useState(initialFieldValues)
 const [errors, setErrors]= useState({})
+
+
+useEffect(() => {
+    if (recordForEdit != null)
+        setValues(recordForEdit);
+
+}, [recordForEdit])
 
 const handleInputChange = e => {
     const { name, value } = e.target;
@@ -65,8 +72,7 @@ const resetForm = ()=>{
 
 const handleFormSubmit = e =>{
     e.preventDefault()
-    if(Validate()){
-
+    if(Validate()) {
         const formData = new FormData()
         formData.append('categoryID', values.categoryID)
         formData.append('categoryName', values.categoryName)
