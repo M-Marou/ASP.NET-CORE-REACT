@@ -60,8 +60,8 @@ import axios from 'axios'
             <div className="card" onClick={()=> {showRecordDetails(data)}}>
                 <img src={data.imageSrc} className="card-img-top" />
                 <div className="card-body">
-                    <h5>{data.productName}</h5>
-                    <span>{data.description}</span> <br/>
+                    <h5 className="d-inline-block text-truncate" title={data.productName}>{data.productName}</h5 >
+                    <span className="d-inline-block text-truncate" title={data.description}>{data.description}</span> <br/>
                     <button className="btn btn-light delete-button" onClick={e => onDelete(e,parseInt(data.productID))}>
                         <i className="far fa-trash-alt"></i>
                     </button>

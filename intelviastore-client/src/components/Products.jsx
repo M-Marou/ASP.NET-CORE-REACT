@@ -91,21 +91,21 @@ export default function Products (props) {
             <div className="card">
                 <img src={values.imageSrc} className="card-img-top" />
                 <div className="card-body">
-                    <div className="form-group">
-                        <input type="file" accept="image/*" className={"form-control-file" + applyErrorClass('imageSrc')}
+                    <div className="form-group p-2">
+                        <input type="file" multiple="multiple" accept="image/*" className={"form-control-file" + applyErrorClass('imageSrc')}
                             onChange={showPreview} id="image-uploader" />
                     </div>
-                    <div className="form-group">
+                    <div className="form-group p-2">
                         <input className={"form-control" + applyErrorClass('productName')} placeholder="Product Name" name="productName" 
                             value={values.productName}
                             onChange={handleInputChange} />
                     </div>
-                    <div className="form-group">
+                    <div className="form-group p-2">
                         <input className={"form-control" + applyErrorClass('description')} placeholder="Product Description" name="description" 
                             value={values.description}
                             onChange={handleInputChange} />
                     </div>
-                    <div className="form-group text-center">
+                    <div className="form-group p-2 text-center">
                         <button type="submit" className="btn btn-outline-primary">Add Product</button>
                     </div>
 

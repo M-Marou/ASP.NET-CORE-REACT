@@ -15,3 +15,12 @@ code {
   color: #dc3545;
   background-color: #fff;
 }
+
+
+.card span {
+  max-width: 250px;
+}
+
+.card .card-body h5 {
+  max-width: 250px;
+}
