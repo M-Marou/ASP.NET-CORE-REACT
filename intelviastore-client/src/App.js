@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import CategoryList from './components/CategoryList';
 import ProductLists from './components/ProductsList';
@@ -15,9 +15,20 @@ const { SubMenu } = Menu;
 
 const { Header, Footer, Sider, Content } = Layout;
 
-
-
 function App() {
+
+  const [fragment, setfragment] = useState();
+  const loadFragment= () =>{
+    switch (fragment)  {
+      case "ProductList":
+        return <ProductLists />
+      case "CategoryList":
+        return <CategoryList/>
+      default:
+        break;
+    }
+  }
+
   return (
     <div className="container" style={{maxWidth:'100%', padding:0}}>
         {/* <ProductLists /> */}
@@ -46,8 +57,8 @@ function App() {
         }
         >
             <Menu.ItemGroup key='Manage'>
-                <Menu.Item key='ProductLists'>Product List</Menu.Item>
-                <Menu.Item key='CategoryList'>Category List</Menu.Item>
+                <Menu.Item key='ProductLists' button onClick={e=>setfragment("ProductList")}>Manage Products</Menu.Item>
+                <Menu.Item key='CategoryList' button onClick={e=>setfragment("CategoryList")}>Manage Categories</Menu.Item>
             </Menu.ItemGroup>
             
         </SubMenu>
@@ -59,8 +70,9 @@ function App() {
             <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
         </Breadcrumb>
         <div style={{ background: '#fff', padding: 24, minHeight: 693 }}> 
-         <ProductLists /> 
-         <CategoryList/> 
+          {/* <ProductLists /> 
+          <CategoryList/>  */} 
+          {loadFragment()}        
         </div>
        </Content>
         <Footer style={{ textAlign: 'center'}}>IntelviaStore ©2021 Created By YouCode Students</Footer>
