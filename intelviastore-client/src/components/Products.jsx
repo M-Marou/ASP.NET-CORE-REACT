@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import axios from 'axios'
 
 const defaultImageSrc = '/img/product.jpg'
 const initialFieldValues = {
@@ -7,7 +8,8 @@ const initialFieldValues = {
     description : '',
     imageSrc: defaultImageSrc,
     imageName: '',
-    imageFile: null
+    imageFile: null,
+    categoryID : 0 
 }
 
 export default function Products (props) {
@@ -21,6 +23,16 @@ export default function Products (props) {
         if(recordForEdit != null)
         setValues(recordForEdit);
     },[recordForEdit])
+
+    // const CategoryAPI = (url = 'https://localhost:44378/api/Categories/') => {
+    //     return{
+    //         fetchall: () => axios.get(url),
+    //     }
+    // }
+
+    // function fetchCategoriesList () {
+    //     CategoryAPI().fetchall()
+    // }
     
     const handleInputChange = e => {
         const { name, value } = e.target;
@@ -76,6 +88,7 @@ export default function Products (props) {
             formData.append('description', values.description)
             formData.append('imageFile', values.imageFile)
             formData.append('imageName', values.imageName)
+            // formData.append('categoryID', values.categoryID)
             addOrEdit(formData, resetForm)
         }
     }
@@ -105,6 +118,11 @@ export default function Products (props) {
                             value={values.description}
                             onChange={handleInputChange} />
                     </div>
+                    {/* <div className="form-group p-2">
+                        <select className="form-control" name="catrgoryID" value={values.categoryID} fetchCategoriesList={fetchCategoriesList}>
+                            <option>--Product Category--</option>
+                        </select>
+                    </div> */}
                     <div className="form-group p-2 text-center">
                         <button type="submit" className="btn btn-outline-primary">Add Product</button>
                     </div>

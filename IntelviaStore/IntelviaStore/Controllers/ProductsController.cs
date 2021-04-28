@@ -36,7 +36,8 @@ namespace IntelviaStore.Controllers
                     ProductName = x.ProductName,
                     Description = x.Description,
                     ImageName = x.ImageName,
-                    ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, x.ImageName)
+                    ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, x.ImageName),
+                    Categories = x.Categories
                 })
                 .ToListAsync();
         }
@@ -56,7 +57,6 @@ namespace IntelviaStore.Controllers
         }
 
         // PUT: api/Products/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProductsModel(int id, [FromForm]ProductsModel productsModel)
         {
@@ -93,7 +93,6 @@ namespace IntelviaStore.Controllers
         }
 
         // POST: api/Products
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<ProductsModel>> PostProductsModel([FromForm]ProductsModel productsModel)
         {

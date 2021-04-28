@@ -8,7 +8,7 @@ import ProductLists from './components/ProductsList';
 function App() {
   return (
     <div className="container">
-        {/* <ProductLists /> */}
+        <ProductLists />
         {/* <CategoryList/> */}
         
     </div>

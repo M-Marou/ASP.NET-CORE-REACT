@@ -25,6 +25,6 @@ namespace IntelviaStore.Models
         [NotMapped]
         public string ImageSrc { get; set; }
 
-        //public CategoriesModel Categories { get; set; }
+        public virtual CategoriesModel Categories { get; set; }
     }
 }
