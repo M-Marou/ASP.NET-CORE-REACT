@@ -41,14 +41,15 @@ function App() {
         title={
           <span>
               <icon type="mail" />
-              <span>About US</span>
+              <span>Manage</span>
           </span>
         }
         >
-            <Menu.ItemGroup key='AboutUS' title='Country 1'>
-                <Menu.Item key='location1'>Location 1</Menu.Item>
-                <Menu.Item key='location2'>Location 2</Menu.Item>
+            <Menu.ItemGroup key='Manage'>
+                <Menu.Item key='ProductLists'>Product List</Menu.Item>
+                <Menu.Item key='CategoryList'>Category List</Menu.Item>
             </Menu.ItemGroup>
+            
         </SubMenu>
       </Menu>
       </Sider>
@@ -57,7 +58,10 @@ function App() {
        <Breadcrumb style={{ margin: '16px 0' }}>
             <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
         </Breadcrumb>
-        <div style={{ background: '#fff', padding: 24, minHeight: 693 }}>Content</div>
+        <div style={{ background: '#fff', padding: 24, minHeight: 693 }}> 
+         <ProductLists /> 
+         <CategoryList/> 
+        </div>
        </Content>
         <Footer style={{ textAlign: 'center'}}>IntelviaStore ©2021 Created By YouCode Students</Footer>
         </Layout>
