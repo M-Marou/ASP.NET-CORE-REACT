@@ -62,6 +62,7 @@ function App() {
             </Menu.ItemGroup>
             
         </SubMenu>
+        <Menu.Item key="Prodacts">Prodacts</Menu.Item>
       </Menu>
       </Sider>
       <Layout>
