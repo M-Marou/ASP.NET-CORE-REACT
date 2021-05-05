@@ -9,7 +9,7 @@ const initialFieldValues = {
     imageSrc: defaultImageSrc,
     imageName: '',
     imageFile: null,
-    categoryID : 0 
+    categoryID : '' 
 }
 
 export default function Products (props) {
@@ -69,6 +69,7 @@ export default function Products (props) {
         temp.productName = values.productName==""?false:true;
         temp.description = values.description==""?false:true;
         temp.imageSrc = values.imageSrc==defaultImageSrc?false:true;
+        temp.categoryID = values.categoryID === "" ?false:true;
         setErrors(temp)
         return Object.values(temp).every(x => x==true)
     } 
@@ -88,12 +89,24 @@ export default function Products (props) {
             formData.append('description', values.description)
             formData.append('imageFile', values.imageFile)
             formData.append('imageName', values.imageName)
-            // formData.append('categoryID', values.categoryID)
+            formData.append('categoryID', values.categoryID)
             addOrEdit(formData, resetForm)
         }
     }
 
     const applyErrorClass = field => ((field in errors && errors[field]==false)?' invalid-field':'')
+
+    const [catList,setCatList]= useState([]);
+    useEffect(()=>{
+        async function fetchCatList(){
+            const requesUrl = "http://localhost:44378/api/Category";
+            const reponse = await fetch(requesUrl);
+            const reponseJson= await reponse.json();
+            console.log(reponseJson);
+            setCatList(reponseJson);
+        }
+        fetchCatList();
+    },[]);
 
     return (
         <>
@@ -118,11 +131,17 @@ export default function Products (props) {
                             value={values.description}
                             onChange={handleInputChange} />
                     </div>
-                    {/* <div className="form-group p-2">
-                        <select className="form-control" name="catrgoryID" value={values.categoryID} fetchCategoriesList={fetchCategoriesList}>
+                    <div className="form-group p-2">
+                        {/* <select className="form-control" name="catrgoryID" value={values.categoryID} fetchCategoriesList={fetchCategoriesList}>
                             <option>--Product Category--</option>
+                        </select> */}
+                        <select name="categoryID" value={values.categoryID} onChange={handleInputChange} className={"form-control"+ applyErrorClass('categoryID')} >
+                            <option>Category...</option>
+                            {catList.map((cat) => (   
+                            <option  key ={cat.id} value={cat.id}  >{cat.title}</option>
+                            ))}
                         </select>
-                    </div> */}
+                    </div>
                     <div className="form-group p-2 text-center">
                         <button type="submit" className="btn btn-outline-primary">Add Product</button>
                     </div>
