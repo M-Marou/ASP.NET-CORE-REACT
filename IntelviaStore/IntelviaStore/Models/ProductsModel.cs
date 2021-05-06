@@ -25,6 +25,8 @@ namespace IntelviaStore.Models
         [NotMapped]
         public string ImageSrc { get; set; }
 
-        //public CategoriesModel Categories { get; set; }
+        [Required(ErrorMessage = "Please Select a Category!")]
+        public int CategoryID { get; set; }
+        public virtual CategoriesModel Categories { get; set; }
     }
 }

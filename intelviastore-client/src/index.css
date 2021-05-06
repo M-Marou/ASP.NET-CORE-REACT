@@ -17,10 +17,32 @@ code {
 }
 
 
-.card span {
-  max-width: 250px;
+.card .card-body h5 {
+  max-width: 400px;
 }
 
-.card .card-body h5 {
-  max-width: 250px;
+.card .card-body P {
+  max-width: 500px;
 }
+
+.card-horizontal {
+  display: flex;
+  flex: 1 1 auto;
+}
+
+.card-horizontal img{
+  max-width: 160px;
+}
+
+.my-custom-scrollbar {
+  position: relative;
+  height: 600px;
+  overflow: auto;
+  }
+  .table-wrapper-scroll-y {
+  display: block;
+  }
+
+/* .card-horizontal img-square-wrapper {
+  height: 100%;
+} */

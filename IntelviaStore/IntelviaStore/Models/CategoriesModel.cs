@@ -22,5 +22,7 @@ namespace IntelviaStore.Models
 
         [NotMapped]
         public string ImageSrc { get; set; }
+
+        public virtual IList<ProductsModel> Products { get; set; }
     }
 }
