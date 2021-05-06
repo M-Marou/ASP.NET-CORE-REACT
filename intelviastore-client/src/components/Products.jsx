@@ -8,7 +8,8 @@ const initialFieldValues = {
     imageSrc: defaultImageSrc,
     imageName: '',
     imageFile: null,
-    categoryID: ''
+    categoryID: '',
+    price: ''
 }
 
 export default function Products (props) {
@@ -59,6 +60,7 @@ export default function Products (props) {
         temp.description = values.description==""?false:true;
         temp.imageSrc = values.imageSrc==defaultImageSrc?false:true;
         temp.categoryID = values.categoryID === "" ?false:true;
+        temp.price = values.price === "" ?false:true;
         setErrors(temp)
         return Object.values(temp).every(x => x==true)
     } 
@@ -79,6 +81,7 @@ export default function Products (props) {
             formData.append('imageFile', values.imageFile)
             formData.append('imageName', values.imageName)
             formData.append('categoryID',values.categoryID)
+            formData.append('price',values.price)
             addOrEdit(formData, resetForm)
         }
     }
@@ -118,6 +121,11 @@ export default function Products (props) {
                     <div className="form-group p-2">
                         <input className={"form-control" + applyErrorClass('description')} placeholder="Product Description" name="description" 
                             value={values.description}
+                            onChange={handleInputChange} />
+                    </div>
+                    <div className="form-group p-2">
+                        <input className={"form-control" + applyErrorClass('price')} type="number" placeholder="Product Price" name="price" 
+                            value={values.price}
                             onChange={handleInputChange} />
                     </div>
                     <div className="form-group p-2">

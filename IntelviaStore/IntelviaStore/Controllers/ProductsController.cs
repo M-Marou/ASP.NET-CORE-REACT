@@ -37,7 +37,8 @@ namespace IntelviaStore.Controllers
                     Description = x.Description,
                     ImageName = x.ImageName,
                     ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, x.ImageName),
-                    CategoryID = x.CategoryID
+                    CategoryID = x.CategoryID,
+                    Price = x.Price
                 })
                 .ToListAsync();
         }
