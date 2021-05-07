@@ -90,9 +90,9 @@ const imageCard = data =>(
                     {
                         [...Array(Math.ceil(categoryList.length /3 ))].map((e,i)=>
                         <tr key={i}>
-                            <td>{imageCard(categoryList[3 * i])}</td>
-                            <td>{categoryList[3 * i + 1]?imageCard(categoryList[3 * i + 1]) : null}</td>
-                            <td>{categoryList[3 * i + 2]?imageCard(categoryList[3 * i + 2]) : null}</td>
+                            <td style={{padding: 15}}>{imageCard(categoryList[3 * i])}</td>
+                            <td style={{padding: 15}}>{categoryList[3 * i + 1]?imageCard(categoryList[3 * i + 1]) : null}</td>
+                            <td style={{padding: 15}}>{categoryList[3 * i + 2]?imageCard(categoryList[3 * i + 2]) : null}</td>
                         </tr>
                         )
                     }

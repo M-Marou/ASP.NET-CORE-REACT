@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import CategoryList from './components/CategoryList';
 import ProductLists from './components/ProductsList';
+// import ProductsListII from './components/ProductsListII';
 import { Layout } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import { Avatar } from 'antd'
@@ -9,6 +10,7 @@ import { Menu } from 'antd';
 import Icon from '@ant-design/icons';
 import { Breadcrumb, Alert } from 'antd';
 import { MailOutlined, AppstoreOutlined, SettingOutlined } from '@ant-design/icons';
+import ProductsList from './components/ProductsListII';
 
 const { SubMenu } = Menu;
 
@@ -24,6 +26,8 @@ function App() {
         return <ProductLists />
       case "CategoryList":
         return <CategoryList/>
+      case "ProductsList":
+        return <ProductsList/>
       default:
         break;
     }
@@ -62,6 +66,7 @@ function App() {
             </Menu.ItemGroup>
             
         </SubMenu>
+        <Menu.Item key='ProductsList' button onClick={e=>setfragment("ProductsList")}>Products</Menu.Item>
       </Menu>
       </Sider>
       <Layout>

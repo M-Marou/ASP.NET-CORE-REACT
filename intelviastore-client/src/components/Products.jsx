@@ -7,7 +7,9 @@ const initialFieldValues = {
     description : '',
     imageSrc: defaultImageSrc,
     imageName: '',
-    imageFile: null
+    imageFile: null,
+    categoryID: '',
+    price: ''
 }
 
 export default function Products (props) {
@@ -57,6 +59,8 @@ export default function Products (props) {
         temp.productName = values.productName==""?false:true;
         temp.description = values.description==""?false:true;
         temp.imageSrc = values.imageSrc==defaultImageSrc?false:true;
+        temp.categoryID = values.categoryID === "" ?false:true;
+        temp.price = values.price === "" ?false:true;
         setErrors(temp)
         return Object.values(temp).every(x => x==true)
     } 
@@ -76,16 +80,30 @@ export default function Products (props) {
             formData.append('description', values.description)
             formData.append('imageFile', values.imageFile)
             formData.append('imageName', values.imageName)
+            formData.append('categoryID',values.categoryID)
+            formData.append('price',values.price)
             addOrEdit(formData, resetForm)
         }
     }
 
     const applyErrorClass = field => ((field in errors && errors[field]==false)?' invalid-field':'')
 
+    const [catList,setCatList]= useState([]);
+    useEffect(()=>{
+        async function fetchCatList(){
+            const requesUrl = "https://localhost:44378/api/Categories";
+            const reponse = await fetch(requesUrl);
+            const reponseJson= await reponse.json();
+            console.log(reponseJson);
+            setCatList(reponseJson);
+        }
+        fetchCatList();
+    },[]);
+
     return (
         <>
         <div className="container text-center">
-            <p className="lead">a product</p>
+            <p className="lead">register product</p>
         </div>
         <form autoComplete="off" noValidate onSubmit={handleFormSubmit}>
             <div className="card">
@@ -104,6 +122,19 @@ export default function Products (props) {
                         <input className={"form-control" + applyErrorClass('description')} placeholder="Product Description" name="description" 
                             value={values.description}
                             onChange={handleInputChange} />
+                    </div>
+                    <div className="form-group p-2">
+                        <input className={"form-control" + applyErrorClass('price')} type="number" placeholder="Product Price" name="price" 
+                            value={values.price}
+                            onChange={handleInputChange} />
+                    </div>
+                    <div className="form-group p-2">
+                    <select name="categoryID" value={values.categoryID} onChange={handleInputChange} className={"form-control"+ applyErrorClass('categoryID')} >
+                    <option>Select category...</option>
+                    {catList.map((cat) => (   
+                    <option  key ={cat.categoryID} value={cat.categoryID}  >{cat.categoryName}</option>
+                    ))}
+                    </select>
                     </div>
                     <div className="form-group p-2 text-center">
                         <button type="submit" className="btn btn-outline-primary">Add Product</button>
