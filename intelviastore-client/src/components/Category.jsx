@@ -89,23 +89,23 @@ const applyErrorClass = field => ((field in errors && errors[field]==false)?' in
     return(
         <>
         <div className="container text-center">
-            <p className="lead">Category</p>
+            <p className="lead">Register Category</p>
         </div>
         <form autoComplete="off" noValidate onSubmit={handleFormSubmit}>
             <div className="card">
                 <img src={values.imageSrc} className="card-img-top" />
                 <div className="card-body">
-                    <div className="form-group">
+                    <div className="form-group p-2">
                         <input type="file" accept="image/*" className={"form-control-file"+applyErrorClass('imageSrc')}
                         onChange={showPreview} id="image-uploader" />
                     </div>
-                    <div className="form-group">
-                        <input className={"form-control"+applyErrorClass('categoryName')} placeholder="category Name" name="categoryName"
+                    <div className="form-group p-2">
+                        <input className={"form-control"+applyErrorClass('categoryName')} placeholder="Category Name" name="categoryName"
                         value={values.categoryName} 
                         onChange = {handleInputChange}/>
                     </div>
-                    <div className="form-group text-center">
-                        <button type="submit" className="btn btn-light">submit</button> 
+                    <div className="form-group text-center p-2">
+                        <button type="submit" className="btn btn-outline-primary">Add Category</button> 
                     </div>
                 </div>
             </div>

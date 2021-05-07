@@ -46,7 +46,7 @@ import axios from 'axios'
 
     return (
         <div className="row">
-            <div className="col-md-8 ">
+            <div>
                 <table className="table ">
                     <tbody>
                         {
