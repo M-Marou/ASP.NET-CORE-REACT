@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "0bKEtjjGG55U5IHDjIXapGSQBIvPtIn67tFkllA78vEMRiOUsPM1WdqpI+MbKDQNeG9LLBw6zDDvduMibcVa3Q==",
+  "dgSpecHash": "BuTGej7P0uWFJHUcrhwsBLL6J1/6mPN15oxK6yOBR8EZz7+Mz1p2nyCjQu4u/dRvdJnCxUP0CM7SJcBBetVI4g==",
   "success": true,
   "projectFilePath": "C:\\Users\\Youcode\\Desktop\\ASP.NET-CORE-WEB-API\\IntelviaStore\\IntelviaStore\\IntelviaStore.csproj",
   "expectedPackageFiles": [
@@ -72,7 +72,7 @@
     "C:\\Users\\Youcode\\.nuget\\packages\\microsoft.visualstudio.web.codegenerators.mvc\\5.0.2\\microsoft.visualstudio.web.codegenerators.mvc.5.0.2.nupkg.sha512",
     "C:\\Users\\Youcode\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
     "C:\\Users\\Youcode\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
-    "C:\\Microsoft\\Xamarin\\NuGet\\newtonsoft.json\\11.0.2\\newtonsoft.json.11.0.2.nupkg.sha512",
+    "C:\\Users\\Youcode\\.nuget\\packages\\newtonsoft.json\\11.0.2\\newtonsoft.json.11.0.2.nupkg.sha512",
     "C:\\Users\\Youcode\\.nuget\\packages\\runtime.native.system\\4.3.0\\runtime.native.system.4.3.0.nupkg.sha512",
     "C:\\Users\\Youcode\\.nuget\\packages\\sqlitepclraw.bundle_e_sqlite3\\2.0.4\\sqlitepclraw.bundle_e_sqlite3.2.0.4.nupkg.sha512",
     "C:\\Users\\Youcode\\.nuget\\packages\\sqlitepclraw.core\\2.0.4\\sqlitepclraw.core.2.0.4.nupkg.sha512",
